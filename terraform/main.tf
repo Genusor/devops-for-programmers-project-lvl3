@@ -44,19 +44,6 @@ resource "digitalocean_certificate" "cert" {
 }
 
 
-resource "digitalocean_database_firewall" "trusted_web_sources" {
-  cluster_id = digitalocean_database_cluster.postgres.id
-
-  dynamic "rule" {
-    for_each = digitalocean_droplet.apps
-    content {
-      type  = "droplet"
-      value = rule.value["id"]
-    }
-  }
-}
-
-
 resource "digitalocean_database_db" "database" {
   cluster_id = digitalocean_database_cluster.postgres.id
   name       = "redmine"
@@ -71,7 +58,19 @@ resource "digitalocean_database_cluster" "postgres" {
   node_count = 1
 }
 
-resource "datadog_monitor" "healthcheck" {
+resource "digitalocean_database_firewall" "trusted_web_sources" {
+  cluster_id = digitalocean_database_cluster.postgres.id
+
+  dynamic "rule" {
+    for_each = digitalocean_droplet.apps
+    content {
+      type  = "droplet"
+      value = rule.value["id"]
+    }
+  }
+}
+
+resource "datadog_monitor" "redmine" {
   name    = "monitor health {{ host.name }}"
   type    = "service check"
   message = "@genusor@gmail.com"
