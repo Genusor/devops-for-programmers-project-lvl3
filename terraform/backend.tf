@@ -3,7 +3,7 @@ terraform {
     organization = "genusor_industry"
 
     workspaces {
-      name = "devops-for-programmers-project-lvl3"
+      name = "devops-for-programmers-project-lvl3-777"
     }
   }
 }
