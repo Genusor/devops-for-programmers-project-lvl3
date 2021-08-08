@@ -1,0 +1,38 @@
+---
+
+- hosts: all
+  gather_facts: yes
+  become: yes
+
+  roles:
+    - role: datadog.datadog
+
+  tasks:
+    - name: Install packages
+      apt:
+        name: python3-pip
+        update_cache: yes
+
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+
+    - name: deploy redmine app
+      docker_container:
+        name: redmine
+        image: redmine
+        restart_policy: always
+        restart: yes
+        recreate: yes
+        pull: yes
+        detach: yes
+        container_default_behavior: no_defaults
+        ports:
+          - 3000:3000
+        state: started
+        env:
+          REDMINE_DB_DATABASE: "{{ redmine_db_database }}"
+          REDMINE_DB_POSTGRES: "{{ redmine_db_postgres }}"
+          REDMINE_DB_PORT: "{{ redmine_db_port }}"
+          REDMINE_DB_USERNAME: "{{ redmine_db_username }}"
+          REDMINE_DB_PASSWORD: "{{ redmine_db_password }}"

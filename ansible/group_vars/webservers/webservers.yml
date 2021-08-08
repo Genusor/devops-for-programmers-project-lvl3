@@ -1,0 +1,6 @@
+redmine_db_postgres: "postgres-cluster-do-user-9398311-0.b.db.ondigitalocean.com"
+redmine_db_port: "25060"
+redmine_db_database: defaultdb
+redmine_db_username: doadmin
+redmine_db_password: "{{ vault_redmine_db_password }}"
+
