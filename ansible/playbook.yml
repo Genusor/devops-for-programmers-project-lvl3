@@ -26,7 +26,6 @@
         recreate: yes
         pull: yes
         detach: yes
-        # container_default_behavior: no_defaults
         ports:
           - 3000:3000
         state: started
