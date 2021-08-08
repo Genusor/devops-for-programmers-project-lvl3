@@ -43,14 +43,6 @@ resource "digitalocean_certificate" "cert" {
   domains = ["genusor.xyz"]
 }
 
-resource "digitalocean_database_cluster" "postgres" {
-  name       = "postgres-cluster"
-  engine     = "pg"
-  version    = "13"
-  size       = "db-s-1vcpu-1gb"
-  region     = "ams3"
-  node_count = 1
-}
 
 resource "digitalocean_database_firewall" "trusted_web_sources" {
   cluster_id = digitalocean_database_cluster.postgres.id
@@ -65,10 +57,18 @@ resource "digitalocean_database_firewall" "trusted_web_sources" {
 }
 
 
-
 resource "digitalocean_database_db" "database" {
   cluster_id = digitalocean_database_cluster.postgres.id
   name       = "redmine"
+}
+
+resource "digitalocean_database_cluster" "postgres" {
+  name       = "postgres-cluster"
+  engine     = "pg"
+  version    = "13"
+  size       = "db-s-1vcpu-1gb"
+  region     = "ams3"
+  node_count = 1
 }
 
 resource "datadog_monitor" "healthcheck" {
@@ -78,7 +78,5 @@ resource "datadog_monitor" "healthcheck" {
   query   = "\"http.can_connect\".over(\"instance:app_health_check\",\"url:http://localhost:3000\").by(\"host\",\"instance\",\"url\").last(2).count_by_status()"
 }
 
-output "webserver_ips" {
-  value = digitalocean_droplet.apps.*.ipv4_address
-}
+
 
