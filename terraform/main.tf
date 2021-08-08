@@ -1,11 +1,11 @@
- 
+
 resource "digitalocean_droplet" "apps" {
-    count = 2
-    image = "docker-20-04"
-    name = "devops-for-programmers-project-lvl3-${count.index}"
-    region = "ams3"
-    size = "s-1vcpu-1gb"
-    ssh_keys = [var.ssh_key]
+  count    = 2
+  image    = "docker-20-04"
+  name     = "devops-for-programmers-project-lvl3-${count.index}"
+  region   = "ams3"
+  size     = "s-1vcpu-1gb"
+  ssh_keys = [var.ssh_key]
 }
 
 resource "digitalocean_loadbalancer" "public" {
@@ -25,7 +25,7 @@ resource "digitalocean_loadbalancer" "public" {
   healthcheck {
     port     = 3000
     protocol = "http"
-    path = "/"
+    path     = "/"
   }
 
   droplet_ids = digitalocean_droplet.apps.*.id
@@ -33,7 +33,7 @@ resource "digitalocean_loadbalancer" "public" {
 
 
 resource "digitalocean_domain" "domain" {
-  name = "genusor.xyz"
+  name       = "genusor.xyz"
   ip_address = digitalocean_loadbalancer.public.ip
 }
 
