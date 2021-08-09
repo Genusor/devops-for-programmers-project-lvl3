@@ -5,6 +5,18 @@
 
 ## Установка
 
+### 0.Подготовка
+Terraform Cloud
+Нужно выставить для каждой переменной параметр sensivity
+`ssh_key`  - id ssh ключа используемого на DigitalOcean
+`do_token` - ключ api DigitalOcean
+`datadog_api_key` - ключ api datadog
+`datadog_app_key` - ключ app datadog
+
+Vault
+файл с паролем находится в директории
+`ansible/pass`
+
 ### 1.Инициализация Terraform
 `make init`
 

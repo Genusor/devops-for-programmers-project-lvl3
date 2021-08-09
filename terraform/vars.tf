@@ -17,3 +17,7 @@ variable "ssh_key" {
   type      = string
   sensitive = true
 }
+
+variable "port_app" {
+  default = 3000
+}
